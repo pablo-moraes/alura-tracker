@@ -1,0 +1,52 @@
+<template>
+    <div class="box form">
+        <div class="columns">
+            <div class="column is-8" role="form" aria-label="Formulário para criação de uma nova tarefa">
+                <input type="text" name="" id="" class="input" placeholder="Qual tarefa você deseja iniciar?" v-model="description">
+            </div>
+
+            <div class="column">
+                <temporizador @atTerminatedTime="finishTask"/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+import Temporizador from '@/components/Temporizador.vue'
+
+export default defineComponent({
+    name: "Formulario",
+    emits: ['onSaveTask'],
+    components:{
+        Temporizador
+    },
+    data () {
+        return {
+            description: ''
+        }
+    },
+    methods: {
+        finishTask (elapsedTime: number) : void {
+            this.$emit('onSaveTask', {
+                timeInSeconds: elapsedTime,
+                description: this.description
+            });
+            this.description = ''
+        }
+    }
+})
+</script>
+
+<style >
+.box {
+    padding: 1rem;
+}
+
+.form {
+    background: var(--bg-primary);
+    color: var(--text-color)
+}
+</style>
